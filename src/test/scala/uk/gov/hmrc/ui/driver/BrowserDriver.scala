@@ -1,34 +1,16 @@
 package uk.gov.hmrc.ui.driver
 
-import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.verbs.ShouldVerb
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, GivenWhenThen}
-import uk.gov.hmrc.selenium.webdriver.{Browser, ScreenshotOnFailure}
-import uk.gov.hmrc.ui.specs.BaseSpec
-//import uk.gov.hmrc.ui.pages.{#PAGE OBJECT NAMES HERE# e.g. ExampleRadioPage}
-//import uk.gov.hmrc.ui.util.Users.LoginTypes.HASDIRECT
-//import uk.gov.hmrc.ui.util.Users.UserTypes.Organisation
+import com.typesafe.scalalogging.LazyLogging
+import org.openqa.selenium.WebDriver
+import uk.gov.hmrc.selenium.webdriver.Driver
 
-class BrowserDriver
-    extends AnyFeatureSpec
-    with BaseSpec
-    with GivenWhenThen
-    with ShouldVerb
-    with BeforeAndAfterAll
-    with BeforeAndAfterEach
-    with Browser
-    with ScreenshotOnFailure {
-
-  Feature("Charities - Agent - Gift Aid frontend Journeys") {
-    Scenario("Agent navigates to **service name**") {
-      Given("Agent navigates to **page name** page")
-      // CODE LINE - e.g. ExampleRadioPage.verifyPageTitle(ExampleRadioPage.pageTitle)
-      And("Agent clicks 'Yes' radio button option")
-      // CODE LINE - e.g. ExampleRadioPage.clickYesRadio()
-      And("Agent clicks 'Continue' button")
-      // CODE LINE - e.g. ExampleRadioPage.clickSubmitButton()
-      And("User navigates to **next page** page")
-      // CODE LINE - e.g. AnotherPage.verifyPageTitle(AnotherPage.pageTitle)
+trait BrowserDriver extends LazyLogging {
+  def driver: WebDriver = {
+    if Option(Driver.instance).isEmpty then {
+      val msg = "WebDriver (Driver.instance) is null! Make sure startBrowser() was called before using driver."
+      logger.error(msg)
+      throw new IllegalStateException(msg)
     }
+    Driver.instance
   }
 }
