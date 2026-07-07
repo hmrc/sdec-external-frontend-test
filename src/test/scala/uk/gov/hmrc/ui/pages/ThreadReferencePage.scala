@@ -33,14 +33,14 @@ import scala.xml.NodeSeq.Empty.text
 
 object ThreadReferencePage extends BasePage {
 
-  val headingLocator: By               = By.xpath("/html/body/header/div[1]/div/div[2]/a")
-  val threadReferenceLocator: By       = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
-  val threadReferenceInputLocator: By  = By.id("thread-reference")
-  val continueButtonLocator: By        = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
-  val errorTitleLocator: By            = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
-  val threadReferenceErrorLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
-  val threadReferenceCharError: By     = By.xpath("//*[@id=\"thread-reference-error\"]")
-  val threadReferenceCharErrorText: By = By.id("thread-reference-error")
+  val headingLocator: By              = By.xpath("/html/body/header/div[1]/div/div[2]/a")
+  val threadReferenceLocator: By      = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
+  val threadReferenceInputLocator: By = By.id("thread-reference")
+  val continueButtonLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
+  val errorTitleLocator: By           = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
+  val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
+  val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/dl/div/dd")
+  val threadRefUnsuccessful: By       = By.cssSelector("#thread-reference-error")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
@@ -86,15 +86,14 @@ object ThreadReferencePage extends BasePage {
     driver.findElements(errorTitleLocator).asScala.nonEmpty &&
       wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).isDisplayed
 
-  def isCharErrorDisplayed: Boolean =
-    driver.findElements(threadReferenceCharError).asScala.nonEmpty &&
-      wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceCharError)).isDisplayed
-
-  def getCharErrorText: String =
-    driver.findElement(threadReferenceCharErrorText).getText.trim.replaceFirst("^Error:\\s*", "")
-
   def getErrorTitleText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).getText.trim
+
+  def isThreadRefSuccessful: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadRefSuccessful)).getText.trim
+
+  def isThreadRefUnsuccessful: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadRefUnsuccessful)).getText.trim
 
   def isInlineErrorDisplayed: Boolean =
     driver.findElements(threadReferenceErrorLocator).asScala.nonEmpty &&

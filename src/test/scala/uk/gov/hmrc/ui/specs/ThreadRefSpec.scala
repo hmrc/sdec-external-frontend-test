@@ -97,11 +97,48 @@ class ThreadRefSpec extends BaseSpec {
 
       Then("the system must prevent progression and display error message")
 
-      ThreadReferencePage.isCharErrorDisplayed
-      ThreadReferencePage.getCharErrorText should include(
+      ThreadReferencePage.isThreadRefUnsuccessful should include(
         "The thread reference contains 12 characters using A - Z and 0 - 9 only"
       )
 
     }
+
+    Scenario("Input field rules successful validation", AcceptanceTests) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the user navigates to the thread reference page and keys the thread reference number")
+      ThreadReferencePage.enterThreadReference("ABCD1234EF56")
+
+      And("the user clicks Continue button")
+
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must validate the manual entry with 12 characters")
+      ThreadReferencePage.isThreadRefSuccessful should include("ABCD1234EF56")
+
+    }
+
+    Scenario("Input field rules error validation", AcceptanceTests) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the user navigates to the thread reference page and keys the thread reference number")
+      ThreadReferencePage.enterThreadReference("ABCD$%&cv")
+
+      And("the user clicks Continue button")
+
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must validate the entry with special characters and case sensitive")
+
+      ThreadReferencePage.isThreadRefUnsuccessful should include(
+        "The thread reference contains 12 characters using A - Z and 0 - 9 only"
+      )
+
+    }
+
   }
 }
