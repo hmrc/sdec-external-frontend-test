@@ -24,32 +24,25 @@ import uk.gov.hmrc.selenium.component.PageObject
 
 import java.time.Duration
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.scalactic.Prettifier.default
+import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
+import uk.gov.hmrc.ui.pages.ThreadReferencePage
 
 import scala.jdk.CollectionConverters.*
+import scala.xml.NodeSeq.Empty.text
 
-class ThreadReferencePage(driver: WebDriver) extends BasePage {
+object ThreadReferencePage extends BasePage {
 
-  private val wait = new WebDriverWait(driver, Duration.ofSeconds(10))
+  val headingLocator: By               = By.xpath("/html/body/header/div[1]/div/div[2]/a")
+  val threadReferenceLocator: By       = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
+  val threadReferenceInputLocator: By  = By.id("thread-reference")
+  val continueButtonLocator: By        = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
+  val errorTitleLocator: By            = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
+  val threadReferenceErrorLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
+  val threadReferenceCharError: By     = By.xpath("//*[@id=\"thread-reference-error\"]")
+  val threadReferenceCharErrorText: By = By.id("thread-reference-error")
 
-  // Prefer data-testid selectors if you can add them in the UI.
-
-  private val headingLocator: By =
-    By.xpath("/html/body/header/div[1]/div/div[2]/a")
-
-  private val threadReferenceLocator: By =
-    By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
-
-  private val threadReferenceInputLocator: By =
-    By.id("thread-reference")
-
-  private val continueButtonLocator: By =
-    By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
-
-  private val errorSummaryLocator: By =
-    By.cssSelector(".govuk-error-summary")
-
-  private val inlineErrorLocator: By =
-    By.id("thread-reference-number-error")
+  private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getCaptionText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(headingLocator)).getText.trim
@@ -67,9 +60,11 @@ class ThreadReferencePage(driver: WebDriver) extends BasePage {
   def isThreadReferenceInputEnabled: Boolean =
     getThreadReferenceInput.isEnabled
 
-  def enterThreadReference(value: String): Unit =
-    getThreadReferenceInput.clear()
-    getThreadReferenceInput.sendKeys(value)
+  def enterThreadReference(value: String): Unit = {
+    val input = getThreadReferenceInput
+    input.clear()
+    input.sendKeys(value)
+  }
 
   def getContinueButton: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(continueButtonLocator))
@@ -87,22 +82,30 @@ class ThreadReferencePage(driver: WebDriver) extends BasePage {
   def selectContinueButton(): Unit =
     getContinueButton.click()
 
-  def isErrorSummaryDisplayed: Boolean =
-    driver.findElements(errorSummaryLocator).asScala.nonEmpty &&
-      wait.until(ExpectedConditions.visibilityOfElementLocated(errorSummaryLocator)).isDisplayed
+  def isErrorTitleDisplayed: Boolean =
+    driver.findElements(errorTitleLocator).asScala.nonEmpty &&
+      wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).isDisplayed
 
-  def getErrorSummaryText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorSummaryLocator)).getText.trim
+  def isCharErrorDisplayed: Boolean =
+    driver.findElements(threadReferenceCharError).asScala.nonEmpty &&
+      wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceCharError)).isDisplayed
+
+  def getCharErrorText: String =
+    driver.findElement(threadReferenceCharErrorText).getText.trim.replaceFirst("^Error:\\s*", "")
+
+  def getErrorTitleText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).getText.trim
 
   def isInlineErrorDisplayed: Boolean =
-    driver.findElements(inlineErrorLocator).asScala.nonEmpty &&
-      wait.until(ExpectedConditions.visibilityOfElementLocated(inlineErrorLocator)).isDisplayed
+    driver.findElements(threadReferenceErrorLocator).asScala.nonEmpty &&
+      wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceErrorLocator)).isDisplayed
 
   def getInlineErrorText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(inlineErrorLocator)).getText.trim
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
 
   def isInlineErrorShownBelowInput: Boolean = {
-    val errorLocation = wait.until(ExpectedConditions.visibilityOfElementLocated(inlineErrorLocator)).getLocation
+    val errorLocation =
+      wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceErrorLocator)).getLocation
     val inputLocation = getThreadReferenceInput.getLocation
     errorLocation.getY > inputLocation.getY
   }

@@ -16,11 +16,16 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.By
+import org.openqa.selenium.support.ui.WebDriverWait
+import org.openqa.selenium.{By, WebDriver}
 import uk.gov.hmrc.ui.conf.TestConfiguration
 import uk.gov.hmrc.ui.driver.BrowserDriver
 
+import java.time.Duration
+
 object AuthLoginPage extends BrowserDriver with BasePage {
+
+  private val wait = new WebDriverWait(driver, Duration.ofSeconds(10))
 
   val url: String         = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
   val frontEndUrl: String = TestConfiguration.url("sdec-external-frontend")

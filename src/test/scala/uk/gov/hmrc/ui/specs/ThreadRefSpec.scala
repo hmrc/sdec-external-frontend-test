@@ -16,40 +16,33 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.must.Matchers
-import uk.gov.hmrc.ui.pages.AuthLoginPage.{driver, login}
-import uk.gov.hmrc.ui.pages.ThreadReferencePage
+
+import uk.gov.hmrc.ui.pages.AuthLoginPage
 import uk.gov.hmrc.ui.pages.ThreadReferencePage
 import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
-import java.time.Duration
-
 class ThreadRefSpec extends BaseSpec {
+
   Feature("Internal User Journey") {
 
-    Scenario("Enter thread reference page - page display", AcceptanceTests) {
+    Scenario("Thread Reference page display", AcceptanceTests) {
 
       Given("User logs in")
-      login()
+      AuthLoginPage.login()
 
       When("the Enter thread reference page loads")
 
-      val wait = new WebDriverWait(driver, Duration.ofSeconds(15))
-
-      val threadRefPage = new ThreadReferencePage(driver)
-
       Then("the system must display the input field and continue button")
 
-      threadRefPage.getThreadReferenceText shouldBe "Enter the thread reference number"
+      ThreadReferencePage.getThreadReferenceText shouldBe "Enter the thread reference number"
 
-      val inputDisplayed  = threadRefPage.isThreadReferenceInputDisplayed
-      val buttonDisplayed = threadRefPage.isContinueButtonDisplayed
-      val buttonEnabled   = threadRefPage.isContinueButtonEnabled
-      val buttonText      = threadRefPage.getContinueButtonText
-      val captionText     = threadRefPage.getCaptionText
+      val inputDisplayed  = ThreadReferencePage.isThreadReferenceInputDisplayed
+      val buttonDisplayed = ThreadReferencePage.isContinueButtonDisplayed
+      val buttonEnabled   = ThreadReferencePage.isContinueButtonEnabled
+      val buttonText      = ThreadReferencePage.getContinueButtonText
+      val captionText     = ThreadReferencePage.getCaptionText
 
       inputDisplayed shouldBe true
 
@@ -66,5 +59,49 @@ class ThreadRefSpec extends BaseSpec {
       buttonText shouldBe "Continue"
     }
 
+    Scenario("Empty field validation", AcceptanceTests) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the user navigates to the thread reference page")
+
+      And("the user clicks Continue without entering a value")
+
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must prevent progression")
+
+      val errorSummary = ThreadReferencePage.isErrorTitleDisplayed
+      val errorTitle   = ThreadReferencePage.getErrorTitleText
+      val errorText    = ThreadReferencePage.getThreadReferenceText
+      And("the system must display an error summary at the top of the page")
+      errorSummary shouldBe true
+      errorTitle     should include("There is a problem")
+
+      And("""the system must display the error message "Enter the thread reference number"""")
+      errorText should include("Enter the thread reference number")
+    }
+
+    Scenario("Invalid Format", AcceptanceTests) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the user navigates to the thread reference page")
+      ThreadReferencePage.enterThreadReference("ABCD")
+
+      And("the user clicks Continue button")
+
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must prevent progression and display error message")
+
+      ThreadReferencePage.isCharErrorDisplayed
+      ThreadReferencePage.getCharErrorText should include(
+        "The thread reference contains 12 characters using A - Z and 0 - 9 only"
+      )
+
+    }
   }
 }
