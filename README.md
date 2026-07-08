@@ -29,6 +29,7 @@ Run tests as follows:
 
 ```bash
 sbt clean -Dbrowser="<browser>" -Denvironment="<environment>" test testReport
+sbt clean -Dbrowser="chrome" -Denvironment="local" test testReport
 ```
 
 ## Scalafmt
