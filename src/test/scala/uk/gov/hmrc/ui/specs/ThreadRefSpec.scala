@@ -25,7 +25,7 @@ import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 class ThreadRefSpec extends BaseSpec {
 
-  Feature("Internal User Journey") {
+  Feature("External User Journey - Thread Reference") {
 
     Scenario("Thread Reference page display", AcceptanceTests) {
 
@@ -109,14 +109,14 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
-      ThreadReferencePage.enterThreadReference("ABCD1234EF56")
+      ThreadReferencePage.enterThreadReference("123456ABCDEF")
 
       And("the user clicks Continue button")
 
       ThreadReferencePage.selectContinueButton()
 
       Then("the system must validate the manual entry with 12 characters")
-      ThreadReferencePage.isThreadRefSuccessful should include("ABCD1234EF56")
+      ThreadReferencePage.isThreadRefSuccessful should include("THREAD-001")
 
     }
 
