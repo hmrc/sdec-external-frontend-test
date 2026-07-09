@@ -39,7 +39,7 @@ object ThreadReferencePage extends BasePage {
   val continueButtonLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
   val errorTitleLocator: By           = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
-  val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/dl/div/dd")
+  val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/div/div")
   val threadRefUnsuccessful: By       = By.cssSelector("#thread-reference-error")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
