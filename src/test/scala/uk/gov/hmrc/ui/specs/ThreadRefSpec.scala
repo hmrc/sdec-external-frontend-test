@@ -25,7 +25,7 @@ import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 class ThreadRefSpec extends BaseSpec {
 
-  Feature("Internal User Journey") {
+  Feature("External User Journey - Thread Reference") {
 
     Scenario("Thread Reference page display", AcceptanceTests) {
 
