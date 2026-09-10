@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-
 import uk.gov.hmrc.ui.pages.AuthLoginPage
 import uk.gov.hmrc.ui.pages.ThreadReferencePage
 import uk.gov.hmrc.ui.specs.tags.AcceptanceTests

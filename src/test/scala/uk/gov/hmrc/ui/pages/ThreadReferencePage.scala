@@ -16,31 +16,23 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.devtools.v135.page.Page
-import org.openqa.selenium.support.ui.WebDriverWait
-import org.openqa.selenium.{By, JavascriptExecutor, WebDriver, WebElement}
-import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.selenium.component.PageObject
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.openqa.selenium.{By, WebElement}
+import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
 import java.time.Duration
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-import org.scalactic.Prettifier.default
-import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
-import uk.gov.hmrc.ui.pages.ThreadReferencePage
-
 import scala.jdk.CollectionConverters.*
-import scala.xml.NodeSeq.Empty.text
 
 object ThreadReferencePage extends BasePage {
 
-  val headingLocator: By              = By.xpath("/html/body/header/div[1]/div/div[2]/a")
-  val threadReferenceLocator: By      = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
+  val headingLocator:              By = By.xpath("/html/body/header/div[1]/div/div[2]/a")
+  val threadReferenceLocator:      By = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
   val threadReferenceInputLocator: By = By.id("thread-reference")
-  val continueButtonLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
-  val errorTitleLocator: By           = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
+  val continueButtonLocator:       By = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
+  val errorTitleLocator:           By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
-  val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/div/div")
-  val threadRefUnsuccessful: By       = By.cssSelector("#thread-reference-error")
+  val threadRefSuccessful:         By = By.xpath("//*[@id=\"main-content\"]/div/div/div/div")
+  val threadRefUnsuccessful:       By = By.cssSelector("#thread-reference-error")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
