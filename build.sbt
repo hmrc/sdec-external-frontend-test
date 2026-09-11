@@ -8,7 +8,15 @@ lazy val root = (project in file("."))
       Compile / scalafmtSbtCheck,
       Compile / scalafmtCheckAll
     )).value,
-    semanticdbEnabled := true
+    semanticdbEnabled := true,
+    Test / fork := true,
+    Test / javaOptions ++= Seq(
+      "-Dbrowser=chrome",
+      "-Denvironment=local",
+      "-Dbrowser.option.headless=true",
+      "-Dbrowser.usePreviousVersion=true"
+    ),
+    Test / parallelExecution := false
   )
 
 addCommandAlias("prePrChecks", "; scalafmtCheckAll; scalafmtSbtCheck; scalafixAll --check")
