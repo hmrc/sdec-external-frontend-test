@@ -40,7 +40,7 @@ class ThreadRefSpec extends BaseSpec {
       val buttonDisplayed = ThreadReferencePage.isContinueButtonDisplayed
       val buttonEnabled   = ThreadReferencePage.isContinueButtonEnabled
       val buttonText      = ThreadReferencePage.getContinueButtonText
-      val captionText     = ThreadReferencePage.getCaptionText
+      val captionText     = ThreadReferencePage.getServiceNameText
 
       inputDisplayed shouldBe true
 
