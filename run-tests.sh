@@ -2,4 +2,4 @@
 
 BROWSER=$1
 
-sbt scalafmtAll scalafmtCheckAll scalafmtSbtCheck clean compile -Dbrowser="${BROWSER:=chrome}" -Denvironment="local" test
+sbt scalafmtAll scalafmtCheckAll scalafmtSbtCheck clean compile -Dbrowser="${BROWSER:=chrome}" -Denvironment="local" -Dbrowser.option.headless=false test

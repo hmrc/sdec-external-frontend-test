@@ -25,7 +25,9 @@ import scala.jdk.CollectionConverters.*
 
 object ThreadReferencePage extends BasePage {
 
-  val headingLocator:              By = By.xpath("/html/body/header/div[1]/div/div[2]/a")
+  val serviceNameLocator: By = By.cssSelector(
+    "header section.govuk-service-navigation .govuk-service-navigation__service-name .govuk-service-navigation__link"
+  )
   val threadReferenceLocator:      By = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
   val threadReferenceInputLocator: By = By.id("thread-reference")
   val continueButtonLocator:       By = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
@@ -37,7 +39,7 @@ object ThreadReferencePage extends BasePage {
   private val webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(1))
 
   def getCaptionText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(headingLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(serviceNameLocator)).getText.trim
 
   def getThreadReferenceText: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
