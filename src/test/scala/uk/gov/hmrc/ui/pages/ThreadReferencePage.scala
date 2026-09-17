@@ -38,7 +38,7 @@ object ThreadReferencePage extends BasePage {
 
   private val webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(1))
 
-  def getCaptionText: String =
+  def getServiceNameText: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(serviceNameLocator)).getText.trim
 
   def getThreadReferenceText: String =
