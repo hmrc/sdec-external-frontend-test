@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 BROWSER=$1
+ENVIRONMENT=$2
+HEADLESSFLAG=$3
+PREVIOUSVERSIONFLAG=$4
 
-sbt scalafmtAll scalafmtCheckAll scalafmtSbtCheck clean compile -Dbrowser="${BROWSER:=chrome}" -Denvironment="local" test
+sbt scalafmtAll scalafmtCheckAll scalafmtSbtCheck clean -Dbrowser="${BROWSER:=chrome}" -Denvironment="${ENVIRONMENT:=local}" -Dbrowser.option.headless="${HEADLESSFLAG:=true}" -Dbrowser.usePreviousVersion="${PREVIOUSVERSIONFLAG:=false}" test
+
