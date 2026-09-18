@@ -11,10 +11,10 @@ lazy val root = (project in file("."))
     semanticdbEnabled := true,
     Test / fork := true,
     Test / javaOptions ++= Seq(
-      "-Dbrowser=chrome",
-      "-Denvironment=local",
-      "-Dbrowser.option.headless=true",
-      "-Dbrowser.usePreviousVersion=true"
+      s"-Dbrowser=${sys.props.getOrElse("browser", "chrome")}",
+      s"-Denvironment=${sys.props.getOrElse("environment", "local")}",
+      s"-Dbrowser.option.headless=${sys.props.getOrElse("browser.option.headless", "true")}",
+      s"-Dbrowser.usePreviousVersion=${sys.props.getOrElse("browser.usePreviousVersion", "true")}"
     ),
     Test / parallelExecution := false
   )
