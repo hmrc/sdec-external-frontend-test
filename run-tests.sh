@@ -5,5 +5,5 @@ ENVIRONMENT=$2
 HEADLESSFLAG=$3
 PREVIOUSVERSIONFLAG=$4
 
-sbt scalafmtAll scalafmtCheckAll scalafmtSbtCheck clean -Dbrowser="${BROWSER:=chrome}" -Denvironment="${ENVIRONMENT:=local}" -Dbrowser.option.headless="${HEADLESSFLAG:=true}" -Dbrowser.usePreviousVersion="${PREVIOUSVERSIONFLAG:=false}" test
+sbt scalafmtCheckAll scalafmtSbtCheck clean compile -Dbrowser="${BROWSER:=chrome}" -Denvironment="${ENVIRONMENT:=local}" -Dbrowser.option.headless="${HEADLESSFLAG:=true}" -Dbrowser.usePreviousVersion="${PREVIOUSVERSIONFLAG:=false}" test
 
